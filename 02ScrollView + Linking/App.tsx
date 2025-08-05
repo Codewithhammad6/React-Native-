@@ -1,4 +1,4 @@
-// App.js
+// App.js 
 import { SafeAreaView, ScrollView } from 'react-native';
 import React from 'react';
 import FlatCards from './components/FlatCards';
