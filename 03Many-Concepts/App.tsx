@@ -13,7 +13,7 @@ const App = () => {
   const slideAnim = useRef(new Animated.Value(-250)).current; // menu starts off-screen
   const [hovered, setHovered] = useState(null);
 
-  // Animate menu in/out
+
   useEffect(() => {
     Animated.timing(slideAnim, {
       toValue: showMenu ? 0 : -250,
