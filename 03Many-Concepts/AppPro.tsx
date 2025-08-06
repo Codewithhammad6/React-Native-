@@ -1,5 +1,10 @@
 // npm install @react-native-clipboard/clipboard
+// npm install @react-native-community/checkbox
+//npm install react-native-bouncy-checkbox
+  
 
+
+import React, { useState } from 'react';
 import {
   StyleSheet,
   TextInput, 
@@ -7,9 +12,12 @@ import {
   Alert,
   Text,
   View,
+  ScrollView
 } from 'react-native';
-import React, { useState } from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
+import CheckBox from '@react-native-community/checkbox';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+
 
 export default function AppPro() {
   const [isLowercase, setIsLowercase] = useState(true);
@@ -26,14 +34,14 @@ export default function AppPro() {
     if (isLowercase) characters += 'abcdefghijklmnopqrstuvwxyz';
     if (isUppercase) characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     if (isNumber) characters += '0123456789';
-    if (isSymbol) characters += '~!@#$%^&*`?/:';
+    if (isSymbol) characters += '~!@#$%^&*`?/:'; 
 
     if (characters.length === 0) {
       Alert.alert('Select at least one option');
       return;
     }
-    const passLength = parseInt(length) || 8;
 
+    const passLength = parseInt(length) || 8;
     if (passLength <= 0) {
       Alert.alert('Enter a valid password length');
       return;
@@ -64,6 +72,7 @@ export default function AppPro() {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Text style={styles.heading}>Password Generator</Text>
 
@@ -91,32 +100,34 @@ export default function AppPro() {
 
         <View style={styles.conditions}>
           <Text style={styles.text}>Include Uppercase letters</Text>
-          <TouchableOpacity
-            style={[styles.checkbox2, isUppercase && styles.checked2]}
-            onPress={() => setIsUppercase(!isUppercase)}
-          >
-            {isUppercase && <Text style={styles.checkmark}>✓</Text>}
-          </TouchableOpacity>
+          <CheckBox
+            value={isUppercase}
+            onValueChange={setIsUppercase}
+            tintColors={{ true: '#3aa6dc', false: '#3aa6dc' }}
+          />
         </View>
 
         <View style={styles.conditions}>
           <Text style={styles.text}>Include Numbers</Text>
-          <TouchableOpacity
-            style={[styles.checkbox3, isNumber && styles.checked3]}
-            onPress={() => setIsNumber(!isNumber)}
-          >
-            {isNumber && <Text style={styles.checkmark}>✓</Text>}
-          </TouchableOpacity>
+          <View>
+           <BouncyCheckbox
+           style={styles.bouncybox}
+        fillColor="#e369b8ff"
+        isChecked={isNumber}
+        onPress={() => setIsNumber(!isNumber)}
+             />
+          </View>
+
+
         </View>
 
         <View style={styles.conditions}>
           <Text style={styles.text}>Include Symbols</Text>
-          <TouchableOpacity
-            style={[styles.checkbox4, isSymbol && styles.checked4]}
-            onPress={() => setIsSymbol(!isSymbol)}
-          >
-            {isSymbol && <Text style={styles.checkmark}>✓</Text>}
-          </TouchableOpacity>
+          <CheckBox
+            value={isSymbol}
+            onValueChange={setIsSymbol}
+            tintColors={{ true: '#9ab038', false: '#c7dc69' }}
+          />
         </View>
       </View>
 
@@ -139,11 +150,12 @@ export default function AppPro() {
         </View>
       )}
     </View>
+  </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  
+
   container: {
     margin: 20,
     marginTop: 35,
@@ -177,70 +189,7 @@ const styles = StyleSheet.create({
   conditions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  checkbox1: {
-    width: 28,
-    height: 28,
-    borderWidth: 2,
-    borderColor: '#69dc72ff',
-    justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 8,
-    borderRadius: 29,
-  },
-  checked1: {
-    backgroundColor: '#29ac4eff',
-    borderColor: '#29ac4eff',
-    borderRadius: 29,
-  },
-  checkbox2: {
-    width: 28,
-    height: 28,
-    borderWidth: 2,
-    borderColor: '#3aa6dcff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
-    borderRadius: 29,
-  },
-  checked2: {
-    backgroundColor: '#3aa6dcff',
-    borderColor: '#3aa6dcff',
-    borderRadius: 29,
-  },
-  checkbox3: {
-    width: 28,
-    height: 28,
-    borderWidth: 2,
-    borderColor: '#dc69cfff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
-    borderRadius: 29,
-  },
-  checked3: {
-    backgroundColor: '#dc69cfff',
-    borderColor: '#dc69cfff',
-    borderRadius: 29,
-  },
-  checkbox4: {
-    width: 28,
-    height: 28,
-    borderWidth: 2,
-    borderColor: '#c7dc69ff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
-    borderRadius: 29,
-  },
-  checked4: {
-    backgroundColor: '#9ab038ff',
-    borderColor: '#9ab038ff',
-    borderRadius: 29,
-  },
-  checkmark: {
-    color: '#fff',
-    fontSize: 16,
   },
   buttons: {
     flexDirection: 'row',
@@ -278,5 +227,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 12,
     fontSize: 25,
+  },
+checkbox1: {
+    width: 26,
+    height: 26,
+    borderWidth: 2,
+    borderColor: '#69dc72ff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 1,
+    borderRadius: 29,
+  },
+  checked1: {
+    backgroundColor: '#29ac4eff',
+    borderColor: '#29ac4eff',
+    borderRadius: 29,
+  },
+  
+    checkmark: {
+    color: '#fff',
+    fontSize: 16,
+  },
+    bouncybox:{
+marginRight:-14
   },
 });

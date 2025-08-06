@@ -1,7 +1,8 @@
-// npm i yup
+// npm install formik yup
 
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, TextInput,StatusBar, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 // Yup validation schema
@@ -20,64 +21,68 @@ const schema = Yup.object().shape({
 });
 
 export default function AppProTwo() {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-  const [errors, setErrors] = useState({});
-
-  const handleRegister = async () => {
-    try {
-      await schema.validate(formData, { abortEarly: false });
-      setErrors({});
-      alert('Registration Successful!');
-      console.log('Form Data:', formData);
-    } catch (err) {
-      if (err.inner) {
-        const formErrors = {};
-        err.inner.forEach((e) => {
-          formErrors[e.path] = e.message;
-        });
-        setErrors(formErrors);
-      }
-    }
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
+       <StatusBar
+            // hidden
+            translucent
+              barStyle="light-content"
+              backgroundColor="#5d8bd0d4"
+            />
       <View style={styles.card}>
         <Text style={styles.heading}>Create Account</Text>
 
-        {/* Name */}
-        <TextInput
-          style={styles.input}
-          placeholder="Full Name"
-          value={formData.name}
-          onChangeText={(text) => setFormData({ ...formData, name: text })}
-        />
-        {errors.name && <Text style={styles.errorBox}>{errors.name}</Text>}
+        <Formik
+          initialValues={{ name: '', email: '', password: '' }}
+          validationSchema={schema}
+          onSubmit={(values, { resetForm }) => {
+            alert('Registration Successful!');
+            resetForm();
+          }}
+        >
+          {({ handleChange,handleBlur, handleSubmit, values, errors, touched }) => (
+         <>
+              {/* Name */}
+              <TextInput
+                style={styles.input}
+                placeholder="Full Name"
+                value={values.name}
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+              />
+              {touched.name && errors.name && <Text style={styles.errorBox}>{errors.name}</Text>}
 
-        {/* Email */}
-        <TextInput
-          style={styles.input}
-          placeholder="Email Address"
-          value={formData.email}
-          onChangeText={(text) => setFormData({ ...formData, email: text })}
-          keyboardType="email-address"
-        />
-        {errors.email && <Text style={styles.errorBox}>{errors.email}</Text>}
+              {/* Email */}
+              <TextInput
+                style={styles.input}
+                placeholder="Email Address"
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                keyboardType="email-address"
+              />
+              {touched.email && errors.email && <Text style={styles.errorBox}>{errors.email}</Text>}
 
-        {/* Password */}
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={formData.password}
-          onChangeText={(text) => setFormData({ ...formData, password: text })}
-          secureTextEntry
-        />
-        {errors.password && <Text style={styles.errorBox}>{errors.password}</Text>}
+              {/* Password */}
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                secureTextEntry
+              />
+              {touched.password && errors.password && (
+                <Text style={styles.errorBox}>{errors.password}</Text>
+              )}
 
-        {/* Submit */}
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
+              {/* Submit */}
+              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Register</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </Formik>
       </View>
     </ScrollView>
   );
