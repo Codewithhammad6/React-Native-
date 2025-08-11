@@ -113,7 +113,7 @@ const useStore = create<UserState>((set) => ({
       set({ 
         user: null, 
         isAuth: false,
-        token: null 
+        // token: null 
       });
       
       Alert.alert('Logged out successfully')
