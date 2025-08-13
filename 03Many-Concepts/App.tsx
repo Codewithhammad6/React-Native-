@@ -7,7 +7,7 @@ import {
   Animated,
   Pressable
 } from 'react-native';
-
+ 
 const App = () => {
   const [showMenu, setShowMenu] = useState(false);
   const slideAnim = useRef(new Animated.Value(-250)).current; // menu starts off-screen
