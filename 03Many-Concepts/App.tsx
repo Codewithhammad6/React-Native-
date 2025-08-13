@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Animated,
   Pressable
-} from 'react-native';
+} from 'react-native'; 
  
 const App = () => {
   const [showMenu, setShowMenu] = useState(false);
